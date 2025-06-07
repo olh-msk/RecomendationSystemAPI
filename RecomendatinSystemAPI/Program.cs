@@ -5,6 +5,11 @@ using RecomendatinSystemAPI.Repositories;
 using RecomendatinSystemAPI.Repositories.Interfaces;
 using RecomendatinSystemAPI.Services;
 using RecomendatinSystemAPI.Services.Interfaces;
+using RecomendationSystemAPI.Data;
+using RecomendationSystemAPI.Repositories;
+using RecomendationSystemAPI.Repositories.Interfaces;
+using RecomendationSystemAPI.Services;
+using RecomendationSystemAPI.Services.Interfaces;
 
 namespace RecomendatinSystemAPI
 {
@@ -27,6 +32,20 @@ namespace RecomendatinSystemAPI
             builder.Services.AddScoped<ICourseRepository, CourseRepository>();
             builder.Services.AddScoped<ICourseService, CourseService>();
 
+            builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+            builder.Services.AddScoped<IStudentService, StudentService>();
+
+            builder.Services.AddScoped<IInterestTagRepository, InterestTagRepository>();
+            builder.Services.AddScoped<IInterestTagService, InterestTagService>();
+
+            builder.Services.AddScoped<IStudentInterestRepository, StudentInterestRepository>();
+            builder.Services.AddScoped<IStudentInterestService, StudentInterestService>();
+
+            builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
+            builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
+
+            builder.Services.AddScoped<IRecommendationService, RecommendationService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -42,6 +61,9 @@ namespace RecomendatinSystemAPI
 
 
             app.MapControllers();
+
+            // init fill DB
+            DbInitializer.Seed(app);
 
             app.Run();
         }

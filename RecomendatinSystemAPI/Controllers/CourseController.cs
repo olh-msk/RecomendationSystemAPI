@@ -1,29 +1,40 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using RecomendatinSystemAPI.Data;
 using RecomendatinSystemAPI.Models;
-using RecomendatinSystemAPI.Services.Interfaces;
+using RecomendationSystemAPI.DTOs.Courses;
+using RecomendationSystemAPI.Helpers;
 
 namespace RecomendatinSystemAPI.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
-    public class CoursesController : ControllerBase
+    [ApiController]
+    public class CourseController : ControllerBase
     {
-        private readonly ICourseService _service;
-        public CoursesController(ICourseService service) => _service = service;
+        private readonly ApplicationDbContext _context;
+        public CourseController(ApplicationDbContext context) => _context = context;
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<CourseDto>>> GetAll()
         {
-            var courses = await _service.GetAllCoursesAsync();
-            return Ok(courses);
+            var courses = await _context.Courses.Include(c => c.Tags).ThenInclude(t => t.InterestTag).ToListAsync();
+            return Ok(courses.Select(DtoMapper.ToDto));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] Course course)
+        public async Task<IActionResult> Create([FromBody] CreateCourseDto dto)
         {
-            await _service.AddCourseAsync(course);
+            var course = new Course
+            {
+                Title = dto.Title,
+                Description = dto.Description,
+                CreditHours = dto.CreditHours,
+                Tags = dto.InterestTagIds.Select(id => new CourseTag { InterestTagId = id }).ToList()
+            };
+
+            _context.Courses.Add(course);
+            await _context.SaveChangesAsync();
             return Ok();
         }
     }
-
 }
