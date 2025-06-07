@@ -1,0 +1,25 @@
+﻿using Microsoft.EntityFrameworkCore;
+using RecomendatinSystemAPI.Data;
+using RecomendatinSystemAPI.Models;
+using RecomendatinSystemAPI.Repositories.Interfaces;
+
+namespace RecomendatinSystemAPI.Repositories
+{
+    public class CourseRepository : ICourseRepository
+    {
+        private readonly ApplicationDbContext _context;
+        public CourseRepository(ApplicationDbContext context) => _context = context;
+
+        public async Task<IEnumerable<Course>> GetAllAsync()
+            => await _context.Courses.Include(course => course.Tags).ThenInclude(courseTag => courseTag.InterestTag).ToListAsync();
+
+        public async Task<Course?> GetByIdAsync(int id)
+            => await _context.Courses.Include(course => course.Tags).ThenInclude(courseTag => courseTag.InterestTag)
+                .FirstOrDefaultAsync(course => course.Id == id);
+
+        public async Task AddAsync(Course course) => await _context.Courses.AddAsync(course);
+
+        public async Task SaveAsync() => await _context.SaveChangesAsync();
+    }
+
+}
