@@ -7,6 +7,7 @@ namespace RecomendatinSystemAPI.Repositories.Interfaces
         Task<IEnumerable<Course>> GetAllAsync();
         Task<Course?> GetByIdAsync(int id);
         Task AddAsync(Course course);
+        Task DeleteAsync(int id);
         Task SaveAsync();
     }
 }

@@ -4,38 +4,41 @@ using RecomendatinSystemAPI.Data;
 using RecomendatinSystemAPI.Models;
 using RecomendationSystemAPI.DTOs.Students;
 using RecomendationSystemAPI.Helpers;
+using RecomendationSystemAPI.Services.Interfaces;
 
 namespace RecomendationSystemAPI.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class StudentController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
-        public StudentController(ApplicationDbContext context) => _context = context;
+        private readonly IStudentService _studentService;
+
+        public StudentController(IStudentService studentService)
+        {
+            _studentService = studentService;
+        }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<StudentDto>>> GetAll()
         {
-            var students = await _context.Students.Include(student => student.Interests).ThenInclude(studentInterest =>
-            studentInterest.InterestTag).ToListAsync();
-
-            return Ok(students.Select(DtoMapper.ToDto));
+            var students = await _studentService.GetAllAsync();
+            return Ok(students);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateStudentDto dto)
         {
-            var student = new Student
-            {
-                FullName = dto.FullName,
-                GPA = dto.GPA,
-                Interests = dto.InterestTagIds.Select(id => new StudentInterest { InterestTagId = id }).ToList()
-            };
-
-            _context.Students.Add(student);
-            await _context.SaveChangesAsync();
+            await _studentService.CreateAsync(dto);
             return Ok();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<StudentDto>> GetById(int id)
+        {
+            var student = await _studentService.GetByIdAsync(id);
+            if (student == null) return NotFound();
+            return Ok(student);
         }
     }
 }

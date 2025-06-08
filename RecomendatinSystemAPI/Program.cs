@@ -10,6 +10,7 @@ using RecomendationSystemAPI.Repositories;
 using RecomendationSystemAPI.Repositories.Interfaces;
 using RecomendationSystemAPI.Services;
 using RecomendationSystemAPI.Services.Interfaces;
+using System.Text.Json.Serialization;
 
 namespace RecomendatinSystemAPI
 {
@@ -22,7 +23,7 @@ namespace RecomendatinSystemAPI
             // Add services to the container.
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
@@ -45,6 +46,15 @@ namespace RecomendatinSystemAPI
             builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
 
             builder.Services.AddScoped<IRecommendationService, RecommendationService>();
+
+            builder.Services.AddControllers()
+                .AddJsonOptions(x =>
+                    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+            builder.Services.AddControllers().AddJsonOptions(opt =>
+            {
+                opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            });
 
             var app = builder.Build();
 

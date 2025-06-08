@@ -1,11 +1,12 @@
-﻿using RecomendatinSystemAPI.Models;
+﻿using RecomendationSystemAPI.DTOs.Courses;
 
 namespace RecomendatinSystemAPI.Services.Interfaces
 {
     public interface ICourseService
     {
-        Task<IEnumerable<Course>> GetAllCoursesAsync();
-        Task<Course?> GetCourseByIdAsync(int id);
-        Task AddCourseAsync(Course course);
+        Task<IEnumerable<CourseDto>> GetAllCoursesAsync();
+        Task<CourseDto?> GetCourseByIdAsync(int id);
+        Task AddCourseAsync(CreateCourseDto dto);
+        Task DeleteCourseAsync(int id);
     }
 }

@@ -1,4 +1,5 @@
-﻿using RecomendatinSystemAPI.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using RecomendatinSystemAPI.Data;
 using RecomendatinSystemAPI.Models;
 using RecomendationSystemAPI.Repositories.Interfaces;
 
@@ -14,6 +15,13 @@ namespace RecomendationSystemAPI.Repositories
             await _context.Enrollments.AddAsync(enrollment);
             await _context.SaveChangesAsync();
         }
-    }
 
+        public async Task<IEnumerable<Enrollment>> GetAllWithDetailsAsync()
+        {
+            return await _context.Enrollments
+                .Include(e => e.Student)
+                .Include(e => e.Course)
+                .ToListAsync();
+        }
+    }
 }

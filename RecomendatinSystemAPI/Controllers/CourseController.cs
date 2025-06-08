@@ -1,39 +1,43 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RecomendatinSystemAPI.Data;
-using RecomendatinSystemAPI.Models;
+using RecomendatinSystemAPI.Services.Interfaces;
 using RecomendationSystemAPI.DTOs.Courses;
-using RecomendationSystemAPI.Helpers;
 
 namespace RecomendatinSystemAPI.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class CourseController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
-        public CourseController(ApplicationDbContext context) => _context = context;
+        private readonly ICourseService _courseService;
+
+        public CourseController(ICourseService courseService)
+        {
+            _courseService = courseService;
+        }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CourseDto>>> GetAll()
+        public async Task<IActionResult> GetAll() =>
+            Ok(await _courseService.GetAllCoursesAsync());
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
         {
-            var courses = await _context.Courses.Include(c => c.Tags).ThenInclude(t => t.InterestTag).ToListAsync();
-            return Ok(courses.Select(DtoMapper.ToDto));
+            var course = await _courseService.GetCourseByIdAsync(id);
+            if (course == null) return NotFound();
+            return Ok(course);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCourseDto dto)
         {
-            var course = new Course
-            {
-                Title = dto.Title,
-                Description = dto.Description,
-                CreditHours = dto.CreditHours,
-                Tags = dto.InterestTagIds.Select(id => new CourseTag { InterestTagId = id }).ToList()
-            };
+            await _courseService.AddCourseAsync(dto);
+            return Ok();
+        }
 
-            _context.Courses.Add(course);
-            await _context.SaveChangesAsync();
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _courseService.DeleteCourseAsync(id);
             return Ok();
         }
     }

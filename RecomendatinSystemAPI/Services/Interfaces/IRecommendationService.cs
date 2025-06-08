@@ -1,9 +1,6 @@
-﻿using RecomendatinSystemAPI.Models;
+﻿using RecomendationSystemAPI.DTOs.Courses;
 
-namespace RecomendationSystemAPI.Services.Interfaces
+public interface IRecommendationService
 {
-    public interface IRecommendationService
-    {
-        Task<IEnumerable<Course>> GetRecommendedCoursesAsync(int studentId);
-    }
+    Task<IEnumerable<CourseDto>> GetRecommendedCoursesAsync(int studentId);
 }

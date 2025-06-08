@@ -1,10 +1,11 @@
-﻿using RecomendatinSystemAPI.Models;
+﻿using RecomendationSystemAPI.DTOs.Students;
 
 namespace RecomendationSystemAPI.Services.Interfaces
 {
     public interface IStudentService
     {
-        Task CreateStudentAsync(Student student);
-        Task<Student?> GetStudentByIdAsync(int id);
+        Task<IEnumerable<StudentDto>> GetAllAsync();
+        Task<StudentDto?> GetByIdAsync(int id);
+        Task CreateAsync(CreateStudentDto dto);
     }
 }

@@ -1,33 +1,33 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RecomendatinSystemAPI.Data;
-using RecomendatinSystemAPI.Models;
-using RecomendationSystemAPI.Services.Interfaces;
+﻿using RecomendatinSystemAPI.Repositories.Interfaces;
+using RecomendationSystemAPI.DTOs.Courses;
+using RecomendationSystemAPI.Helpers;
+using RecomendationSystemAPI.Repositories.Interfaces;
 
 namespace RecomendationSystemAPI.Services
 {
     public class RecommendationService : IRecommendationService
     {
-        private readonly ApplicationDbContext _context;
-        public RecommendationService(ApplicationDbContext context) => _context = context;
+        private readonly IStudentRepository _studentRepo;
+        private readonly ICourseRepository _courseRepo;
 
-        public async Task<IEnumerable<Course>> GetRecommendedCoursesAsync(int studentId)
+        public RecommendationService(IStudentRepository studentRepo, ICourseRepository courseRepo)
         {
-            var student = await _context.Students
-                .Include(student => student.Interests)
-                .ThenInclude(studentInterest => studentInterest.InterestTag)
-                .FirstOrDefaultAsync(student => student.Id == studentId);
+            _studentRepo = studentRepo;
+            _courseRepo = courseRepo;
+        }
 
-            if (student == null) return Enumerable.Empty<Course>();
+        public async Task<IEnumerable<CourseDto>> GetRecommendedCoursesAsync(int studentId)
+        {
+            var student = await _studentRepo.GetByIdAsync(studentId);
+            if (student == null) return Enumerable.Empty<CourseDto>();
 
-            var interestIds = student.Interests.Select(studentInterest => studentInterest.InterestTagId).ToList();
+            var interestIds = student.Interests.Select(i => i.InterestTagId).ToList();
 
-            var recommended = await _context.Courses
-                .Include(course => course.Tags)
-                .ThenInclude(courseTag => courseTag.InterestTag)
-                .Where(course => course.Tags.Any(courseTag => interestIds.Contains(courseTag.InterestTagId)))
-                .ToListAsync();
+            var allCourses = await _courseRepo.GetAllAsync();
+            var filtered = allCourses
+                .Where(course => course.Tags.Any(tag => interestIds.Contains(tag.InterestTagId)));
 
-            return recommended;
+            return filtered.Select(DtoMapper.ToDto);
         }
     }
 }

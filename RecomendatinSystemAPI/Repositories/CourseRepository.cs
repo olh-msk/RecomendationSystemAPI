@@ -20,6 +20,15 @@ namespace RecomendatinSystemAPI.Repositories
         public async Task AddAsync(Course course) => await _context.Courses.AddAsync(course);
 
         public async Task SaveAsync() => await _context.SaveChangesAsync();
-    }
 
+        public async Task DeleteAsync(int id)
+        {
+            var course = await _context.Courses.FindAsync(id);
+            if (course != null)
+                _context.Courses.Remove(course);
+
+            await _context.SaveChangesAsync();
+        }
+
+    }
 }

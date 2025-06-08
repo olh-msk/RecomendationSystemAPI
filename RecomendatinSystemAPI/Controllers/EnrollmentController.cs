@@ -1,44 +1,32 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RecomendatinSystemAPI.Data;
-using RecomendatinSystemAPI.Models;
 using RecomendationSystemAPI.DTOs.Enrollments;
-using RecomendationSystemAPI.Helpers;
+using RecomendationSystemAPI.Services.Interfaces;
 
 namespace RecomendationSystemAPI.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class EnrollmentController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
-        public EnrollmentController(ApplicationDbContext context) => _context = context;
+        private readonly IEnrollmentService _service;
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<EnrollmentDto>>> GetAll()
+        public EnrollmentController(IEnrollmentService service)
         {
-            var enrollments = await _context.Enrollments
-                .Include(e => e.Student)
-                .Include(e => e.Course)
-                .ToListAsync();
-
-            return Ok(enrollments.Select(DtoMapper.ToDto));
+            _service = service;
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateEnrollmentDto dto)
         {
-            var enrollment = new Enrollment
-            {
-                StudentId = dto.StudentId,
-                CourseId = dto.CourseId,
-                Grade = dto.Grade,
-                Semester = dto.Semester
-            };
-
-            _context.Enrollments.Add(enrollment);
-            await _context.SaveChangesAsync();
+            await _service.EnrollStudentAsync(dto);
             return Ok();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<EnrollmentDto>>> GetAll()
+        {
+            var enrollments = await _service.GetAllEnrollmentsAsync();
+            return Ok(enrollments);
         }
     }
 }

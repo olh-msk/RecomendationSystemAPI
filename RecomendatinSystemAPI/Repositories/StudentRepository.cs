@@ -19,6 +19,13 @@ namespace RecomendationSystemAPI.Repositories
             await _context.Students.AddAsync(student);
 
         public async Task SaveAsync() => await _context.SaveChangesAsync();
-    }
 
+        public async Task<IEnumerable<Student>> GetAllAsync()
+        {
+            return await _context.Students
+                .Include(s => s.Interests)
+                .ThenInclude(si => si.InterestTag)
+                .ToListAsync();
+        }
+    }
 }
