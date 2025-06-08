@@ -7,5 +7,6 @@ namespace RecomendationSystemAPI.Services.Interfaces
         Task<IEnumerable<StudentDto>> GetAllAsync();
         Task<StudentDto?> GetByIdAsync(int id);
         Task CreateAsync(CreateStudentDto dto);
+        Task<bool> UpdateAsync(UpdateStudentDto dto);
     }
 }

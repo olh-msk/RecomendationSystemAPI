@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RecomendatinSystemAPI.Data;
-using RecomendatinSystemAPI.Models;
 using RecomendationSystemAPI.DTOs.Students;
-using RecomendationSystemAPI.Helpers;
 using RecomendationSystemAPI.Services.Interfaces;
 
 namespace RecomendationSystemAPI.Controllers
@@ -39,6 +35,17 @@ namespace RecomendationSystemAPI.Controllers
             var student = await _studentService.GetByIdAsync(id);
             if (student == null) return NotFound();
             return Ok(student);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateStudentDto dto)
+        {
+            if (id != dto.Id) return BadRequest();
+
+            var success = await _studentService.UpdateAsync(dto);
+            if (!success) return NotFound();
+
+            return NoContent();
         }
     }
 }
