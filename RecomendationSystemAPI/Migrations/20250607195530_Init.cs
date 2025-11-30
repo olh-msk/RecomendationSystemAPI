@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace RecomendatinSystemAPI.Migrations
+namespace RecomendationSystemAPI.Migrations
 {
     /// <inheritdoc />
     public partial class Init : Migration

@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using RecomendatinSystemAPI.Data;
+using RecomendationSystemAPI.Data;
 
 #nullable disable
 
-namespace RecomendatinSystemAPI.Migrations
+namespace RecomendationSystemAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20250607195530_Init")]
@@ -24,7 +24,7 @@ namespace RecomendatinSystemAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("RecomendatinSystemAPI.Models.Course", b =>
+            modelBuilder.Entity("RecomendationSystemAPI.Models.Course", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -48,7 +48,7 @@ namespace RecomendatinSystemAPI.Migrations
                     b.ToTable("Courses");
                 });
 
-            modelBuilder.Entity("RecomendatinSystemAPI.Models.CourseTag", b =>
+            modelBuilder.Entity("RecomendationSystemAPI.Models.CourseTag", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -71,7 +71,7 @@ namespace RecomendatinSystemAPI.Migrations
                     b.ToTable("CourseTags");
                 });
 
-            modelBuilder.Entity("RecomendatinSystemAPI.Models.Enrollment", b =>
+            modelBuilder.Entity("RecomendationSystemAPI.Models.Enrollment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -101,7 +101,7 @@ namespace RecomendatinSystemAPI.Migrations
                     b.ToTable("Enrollments");
                 });
 
-            modelBuilder.Entity("RecomendatinSystemAPI.Models.InterestTag", b =>
+            modelBuilder.Entity("RecomendationSystemAPI.Models.InterestTag", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -118,7 +118,7 @@ namespace RecomendatinSystemAPI.Migrations
                     b.ToTable("InterestTags");
                 });
 
-            modelBuilder.Entity("RecomendatinSystemAPI.Models.Student", b =>
+            modelBuilder.Entity("RecomendationSystemAPI.Models.Student", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -138,7 +138,7 @@ namespace RecomendatinSystemAPI.Migrations
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("RecomendatinSystemAPI.Models.StudentInterest", b =>
+            modelBuilder.Entity("RecomendationSystemAPI.Models.StudentInterest", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -161,15 +161,15 @@ namespace RecomendatinSystemAPI.Migrations
                     b.ToTable("StudentInterests");
                 });
 
-            modelBuilder.Entity("RecomendatinSystemAPI.Models.CourseTag", b =>
+            modelBuilder.Entity("RecomendationSystemAPI.Models.CourseTag", b =>
                 {
-                    b.HasOne("RecomendatinSystemAPI.Models.Course", "Course")
+                    b.HasOne("RecomendationSystemAPI.Models.Course", "Course")
                         .WithMany("Tags")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RecomendatinSystemAPI.Models.InterestTag", "InterestTag")
+                    b.HasOne("RecomendationSystemAPI.Models.InterestTag", "InterestTag")
                         .WithMany()
                         .HasForeignKey("InterestTagId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -180,15 +180,15 @@ namespace RecomendatinSystemAPI.Migrations
                     b.Navigation("InterestTag");
                 });
 
-            modelBuilder.Entity("RecomendatinSystemAPI.Models.Enrollment", b =>
+            modelBuilder.Entity("RecomendationSystemAPI.Models.Enrollment", b =>
                 {
-                    b.HasOne("RecomendatinSystemAPI.Models.Course", "Course")
+                    b.HasOne("RecomendationSystemAPI.Models.Course", "Course")
                         .WithMany("Enrollments")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RecomendatinSystemAPI.Models.Student", "Student")
+                    b.HasOne("RecomendationSystemAPI.Models.Student", "Student")
                         .WithMany("Enrollments")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -199,15 +199,15 @@ namespace RecomendatinSystemAPI.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("RecomendatinSystemAPI.Models.StudentInterest", b =>
+            modelBuilder.Entity("RecomendationSystemAPI.Models.StudentInterest", b =>
                 {
-                    b.HasOne("RecomendatinSystemAPI.Models.InterestTag", "InterestTag")
+                    b.HasOne("RecomendationSystemAPI.Models.InterestTag", "InterestTag")
                         .WithMany()
                         .HasForeignKey("InterestTagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RecomendatinSystemAPI.Models.Student", "Student")
+                    b.HasOne("RecomendationSystemAPI.Models.Student", "Student")
                         .WithMany("Interests")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -218,14 +218,14 @@ namespace RecomendatinSystemAPI.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("RecomendatinSystemAPI.Models.Course", b =>
+            modelBuilder.Entity("RecomendationSystemAPI.Models.Course", b =>
                 {
                     b.Navigation("Enrollments");
 
                     b.Navigation("Tags");
                 });
 
-            modelBuilder.Entity("RecomendatinSystemAPI.Models.Student", b =>
+            modelBuilder.Entity("RecomendationSystemAPI.Models.Student", b =>
                 {
                     b.Navigation("Enrollments");
 

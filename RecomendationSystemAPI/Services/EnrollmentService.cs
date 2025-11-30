@@ -1,7 +1,6 @@
-﻿using RecomendatinSystemAPI.Models;
-using RecomendatinSystemAPI.Repositories.Interfaces;
-using RecomendationSystemAPI.DTOs.Enrollments;
+﻿using RecomendationSystemAPI.DTOs.Enrollments;
 using RecomendationSystemAPI.Helpers;
+using RecomendationSystemAPI.Models;
 using RecomendationSystemAPI.Repositories.Interfaces;
 using RecomendationSystemAPI.Services.Interfaces;
 

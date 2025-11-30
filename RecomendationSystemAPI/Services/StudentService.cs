@@ -1,4 +1,4 @@
-﻿using RecomendatinSystemAPI.Models;
+﻿using RecomendationSystemAPI.Models;
 using RecomendationSystemAPI.DTOs.Students;
 using RecomendationSystemAPI.Helpers;
 using RecomendationSystemAPI.Repositories.Interfaces;

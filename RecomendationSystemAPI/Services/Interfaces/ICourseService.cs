@@ -1,6 +1,6 @@
 ﻿using RecomendationSystemAPI.DTOs.Courses;
 
-namespace RecomendatinSystemAPI.Services.Interfaces
+namespace RecomendationSystemAPI.Services.Interfaces
 {
     public interface ICourseService
     {

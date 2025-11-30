@@ -1,5 +1,5 @@
-﻿using RecomendatinSystemAPI.Data;
-using RecomendatinSystemAPI.Models;
+﻿using RecomendationSystemAPI.Data;
+using RecomendationSystemAPI.Models;
 
 namespace RecomendationSystemAPI.Data
 {

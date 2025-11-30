@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RecomendatinSystemAPI.Services.Interfaces;
+using RecomendationSystemAPI.Services.Interfaces;
 using RecomendationSystemAPI.DTOs.Courses;
 
-namespace RecomendatinSystemAPI.Controllers
+namespace RecomendationSystemAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

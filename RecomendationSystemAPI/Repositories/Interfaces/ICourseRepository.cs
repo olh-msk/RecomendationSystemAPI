@@ -1,6 +1,6 @@
-﻿using RecomendatinSystemAPI.Models;
+﻿using RecomendationSystemAPI.Models;
 
-namespace RecomendatinSystemAPI.Repositories.Interfaces
+namespace RecomendationSystemAPI.Repositories.Interfaces
 {
     public interface ICourseRepository
     {

@@ -1,5 +1,5 @@
-﻿using RecomendatinSystemAPI.Data;
-using RecomendatinSystemAPI.Models;
+﻿using RecomendationSystemAPI.Data;
+using RecomendationSystemAPI.Models;
 using RecomendationSystemAPI.Repositories.Interfaces;
 
 namespace RecomendationSystemAPI.Repositories

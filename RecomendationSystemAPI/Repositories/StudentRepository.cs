@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RecomendatinSystemAPI.Data;
-using RecomendatinSystemAPI.Models;
+using RecomendationSystemAPI.Data;
+using RecomendationSystemAPI.Models;
 using RecomendationSystemAPI.Repositories.Interfaces;
 
 namespace RecomendationSystemAPI.Repositories
@@ -15,8 +15,10 @@ namespace RecomendationSystemAPI.Repositories
                                    .Include(student => student.Enrollments)
                                    .FirstOrDefaultAsync(student => student.Id == id);
 
-        public async Task AddAsync(Student student) =>
+        public async Task AddAsync(Student student)
+        {
             await _context.Students.AddAsync(student);
+        }
 
         public async Task SaveAsync() => await _context.SaveChangesAsync();
 

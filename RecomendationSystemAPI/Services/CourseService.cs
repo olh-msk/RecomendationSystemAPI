@@ -1,9 +1,9 @@
-﻿using RecomendatinSystemAPI.Models;
-using RecomendatinSystemAPI.Repositories.Interfaces;
-using RecomendatinSystemAPI.Services.Interfaces;
+﻿using RecomendationSystemAPI.Models;
+using RecomendationSystemAPI.Repositories.Interfaces;
+using RecomendationSystemAPI.Services.Interfaces;
 using RecomendationSystemAPI.DTOs.Courses;
 
-namespace RecomendatinSystemAPI.Services
+namespace RecomendationSystemAPI.Services
 {
     public class CourseService : ICourseService
     {

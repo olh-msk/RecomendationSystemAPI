@@ -1,5 +1,4 @@
-﻿using RecomendatinSystemAPI.Repositories.Interfaces;
-using RecomendationSystemAPI.DTOs.Courses;
+﻿using RecomendationSystemAPI.DTOs.Courses;
 using RecomendationSystemAPI.Helpers;
 using RecomendationSystemAPI.Repositories.Interfaces;
 

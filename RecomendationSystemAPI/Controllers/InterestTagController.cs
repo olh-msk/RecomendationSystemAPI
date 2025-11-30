@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RecomendatinSystemAPI.Models;
+using RecomendationSystemAPI.Models;
 using RecomendationSystemAPI.DTOs.InterestTags;
 using RecomendationSystemAPI.Helpers;
 using RecomendationSystemAPI.Services.Interfaces;

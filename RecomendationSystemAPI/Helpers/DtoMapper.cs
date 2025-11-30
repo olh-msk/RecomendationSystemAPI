@@ -1,4 +1,4 @@
-﻿using RecomendatinSystemAPI.Models;
+﻿using RecomendationSystemAPI.Models;
 using RecomendationSystemAPI.DTOs.Courses;
 using RecomendationSystemAPI.DTOs.Enrollments;
 using RecomendationSystemAPI.DTOs.InterestTags;

@@ -1,10 +1,4 @@
-
 using Microsoft.EntityFrameworkCore;
-using RecomendatinSystemAPI.Data;
-using RecomendatinSystemAPI.Repositories;
-using RecomendatinSystemAPI.Repositories.Interfaces;
-using RecomendatinSystemAPI.Services;
-using RecomendatinSystemAPI.Services.Interfaces;
 using RecomendationSystemAPI.Data;
 using RecomendationSystemAPI.Repositories;
 using RecomendationSystemAPI.Repositories.Interfaces;
@@ -12,7 +6,7 @@ using RecomendationSystemAPI.Services;
 using RecomendationSystemAPI.Services.Interfaces;
 using System.Text.Json.Serialization;
 
-namespace RecomendatinSystemAPI
+namespace RecomendationSystemAPI
 {
     public class Program
     {
@@ -46,6 +40,8 @@ namespace RecomendatinSystemAPI
             builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
 
             builder.Services.AddScoped<IRecommendationService, RecommendationService>();
+
+            builder.Services.AddScoped<IAuthService, AuthService>();
 
             builder.Services.AddControllers()
                 .AddJsonOptions(x =>

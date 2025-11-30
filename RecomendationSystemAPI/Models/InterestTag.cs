@@ -1,4 +1,4 @@
-﻿namespace RecomendatinSystemAPI.Models
+﻿namespace RecomendationSystemAPI.Models
 {
     public class InterestTag
     {

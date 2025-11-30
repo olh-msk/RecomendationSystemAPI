@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RecomendatinSystemAPI.Data;
-using RecomendatinSystemAPI.Models;
-using RecomendatinSystemAPI.Repositories.Interfaces;
+using RecomendationSystemAPI.Data;
+using RecomendationSystemAPI.Models;
+using RecomendationSystemAPI.Repositories.Interfaces;
 
-namespace RecomendatinSystemAPI.Repositories
+namespace RecomendationSystemAPI.Repositories
 {
     public class CourseRepository : ICourseRepository
     {

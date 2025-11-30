@@ -1,4 +1,4 @@
-﻿using RecomendatinSystemAPI.Models;
+﻿using RecomendationSystemAPI.Models;
 
 namespace RecomendationSystemAPI.Repositories.Interfaces
 {
