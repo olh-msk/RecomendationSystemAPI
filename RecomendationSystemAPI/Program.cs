@@ -1,9 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using RecomendationSystemAPI.Data;
 using RecomendationSystemAPI.Repositories;
 using RecomendationSystemAPI.Repositories.Interfaces;
 using RecomendationSystemAPI.Services;
 using RecomendationSystemAPI.Services.Interfaces;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace RecomendationSystemAPI
@@ -15,7 +18,6 @@ namespace RecomendationSystemAPI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
 
             builder.Services.AddEndpointsApiExplorer();
@@ -24,6 +26,8 @@ namespace RecomendationSystemAPI
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            // where services are registered
+            builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ICourseRepository, CourseRepository>();
             builder.Services.AddScoped<ICourseService, CourseService>();
 
@@ -41,15 +45,28 @@ namespace RecomendationSystemAPI
 
             builder.Services.AddScoped<IRecommendationService, RecommendationService>();
 
-            builder.Services.AddScoped<IAuthService, AuthService>();
-
             builder.Services.AddControllers()
                 .AddJsonOptions(x =>
                     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
-            builder.Services.AddControllers().AddJsonOptions(opt =>
+            // JWT auth
+            var jwtKey = builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key missing");
+            builder.Services.AddAuthentication(options =>
             {
-                opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+                };
             });
 
             builder.Services.AddCors(options =>
@@ -76,8 +93,8 @@ namespace RecomendationSystemAPI
 
             app.UseCors();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 

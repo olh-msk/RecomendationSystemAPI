@@ -7,28 +7,42 @@ namespace RecomendationSystemAPI.Repositories
 {
     public class CourseRepository : ICourseRepository
     {
-        private readonly ApplicationDbContext _context;
-        public CourseRepository(ApplicationDbContext context) => _context = context;
+        private readonly ApplicationDbContext _db;
+
+        public CourseRepository(ApplicationDbContext db) => _db = db;
 
         public async Task<IEnumerable<Course>> GetAllAsync()
-            => await _context.Courses.Include(course => course.Tags).ThenInclude(courseTag => courseTag.InterestTag).ToListAsync();
+        {
+            return await _db.Courses
+                .Include(c => c.Tags!)
+                    .ThenInclude(ct => ct.InterestTag)
+                .Include(c => c.Enrollments!)
+                .ToListAsync();
+        }
 
         public async Task<Course?> GetByIdAsync(int id)
-            => await _context.Courses.Include(course => course.Tags).ThenInclude(courseTag => courseTag.InterestTag)
-                .FirstOrDefaultAsync(course => course.Id == id);
+        {
+            return await _db.Courses
+                .Include(c => c.Tags!)
+                    .ThenInclude(ct => ct.InterestTag)
+                .Include(c => c.Enrollments!)
+                .FirstOrDefaultAsync(c => c.Id == id);
+        }
 
-        public async Task AddAsync(Course course) => await _context.Courses.AddAsync(course);
-
-        public async Task SaveAsync() => await _context.SaveChangesAsync();
+        public async Task AddAsync(Course course)
+        {
+            await _db.Courses.AddAsync(course);
+        }
 
         public async Task DeleteAsync(int id)
         {
-            var course = await _context.Courses.FindAsync(id);
-            if (course != null)
-                _context.Courses.Remove(course);
-
-            await _context.SaveChangesAsync();
+            var c = await _db.Courses.FindAsync(id);
+            if (c != null) _db.Courses.Remove(c);
         }
 
+        public async Task SaveAsync()
+        {
+            await _db.SaveChangesAsync();
+        }
     }
 }

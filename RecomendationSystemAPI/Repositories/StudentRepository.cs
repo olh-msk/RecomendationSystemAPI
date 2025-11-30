@@ -11,9 +11,16 @@ namespace RecomendationSystemAPI.Repositories
         public StudentRepository(ApplicationDbContext context) => _context = context;
 
         public async Task<Student?> GetByIdAsync(int id) =>
-            await _context.Students.Include(student => student.Interests).ThenInclude(studentInterest => studentInterest.InterestTag)
-                                   .Include(student => student.Enrollments)
-                                   .FirstOrDefaultAsync(student => student.Id == id);
+            await _context.Students
+                .Include(s => s.Interests!).ThenInclude(si => si.InterestTag)
+                .Include(s => s.Enrollments!)
+                .FirstOrDefaultAsync(s => s.Id == id);
+
+        public async Task<Student?> GetByEmailAsync(string email) =>
+            await _context.Students
+                .Include(s => s.Interests!).ThenInclude(si => si.InterestTag)
+                .Include(s => s.Enrollments!)
+                .FirstOrDefaultAsync(s => s.Email == email);
 
         public async Task AddAsync(Student student)
         {
@@ -25,8 +32,7 @@ namespace RecomendationSystemAPI.Repositories
         public async Task<IEnumerable<Student>> GetAllAsync()
         {
             return await _context.Students
-                .Include(s => s.Interests)
-                .ThenInclude(si => si.InterestTag)
+                .Include(s => s.Interests).ThenInclude(si => si.InterestTag)
                 .ToListAsync();
         }
     }

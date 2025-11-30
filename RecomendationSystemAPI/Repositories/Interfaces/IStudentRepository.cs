@@ -6,6 +6,7 @@ namespace RecomendationSystemAPI.Repositories.Interfaces
     {
         Task<IEnumerable<Student>> GetAllAsync();
         Task<Student?> GetByIdAsync(int id);
+        Task<Student?> GetByEmailAsync(string email);
         Task AddAsync(Student student);
         Task SaveAsync();
     }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RecomendationSystemAPI.Data;
 
@@ -10,9 +11,11 @@ using RecomendationSystemAPI.Data;
 namespace RecomendationSystemAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251130112352_AddAuthFieldsAndCourseTags")]
+    partial class AddAuthFieldsAndCourseTags
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,9 +32,6 @@ namespace RecomendationSystemAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CreatedById")
-                        .HasColumnType("int");
-
                     b.Property<int>("CreditHours")
                         .HasColumnType("int");
 
@@ -44,8 +44,6 @@ namespace RecomendationSystemAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
 
                     b.ToTable("Courses");
                 });
@@ -147,9 +145,6 @@ namespace RecomendationSystemAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Students");
@@ -176,15 +171,6 @@ namespace RecomendationSystemAPI.Migrations
                     b.HasIndex("StudentId");
 
                     b.ToTable("StudentInterests");
-                });
-
-            modelBuilder.Entity("RecomendationSystemAPI.Models.Course", b =>
-                {
-                    b.HasOne("RecomendationSystemAPI.Models.Student", "CreatedBy")
-                        .WithMany("CreatedCourses")
-                        .HasForeignKey("CreatedById");
-
-                    b.Navigation("CreatedBy");
                 });
 
             modelBuilder.Entity("RecomendationSystemAPI.Models.CourseTag", b =>
@@ -253,8 +239,6 @@ namespace RecomendationSystemAPI.Migrations
 
             modelBuilder.Entity("RecomendationSystemAPI.Models.Student", b =>
                 {
-                    b.Navigation("CreatedCourses");
-
                     b.Navigation("Enrollments");
 
                     b.Navigation("Interests");

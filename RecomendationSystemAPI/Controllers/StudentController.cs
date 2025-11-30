@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RecomendationSystemAPI.DTOs.Students;
 using RecomendationSystemAPI.Services.Interfaces;
+using System.Security.Claims;
 
 namespace RecomendationSystemAPI.Controllers
 {
@@ -22,30 +24,30 @@ namespace RecomendationSystemAPI.Controllers
             return Ok(students);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateStudentDto dto)
+        [HttpGet("me")]
+        [Authorize]
+        public async Task<ActionResult<StudentDto>> GetMe()
         {
-            await _studentService.CreateAsync(dto);
-            return Ok();
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<StudentDto>> GetById(int id)
-        {
+            var idClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!int.TryParse(idClaim, out var id)) return Forbid();
             var student = await _studentService.GetByIdAsync(id);
             if (student == null) return NotFound();
             return Ok(student);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] UpdateStudentDto dto)
+        [HttpPut("me")]
+        [Authorize]
+        public async Task<IActionResult> UpdateMe([FromBody] UpdateStudentDto dto)
         {
+            var idClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!int.TryParse(idClaim, out var id)) return Forbid();
             if (id != dto.Id) return BadRequest();
 
             var success = await _studentService.UpdateAsync(dto);
             if (!success) return NotFound();
-
             return NoContent();
         }
+
+        // admin/teacher endpoints could be added below to view students of teacher's courses
     }
 }

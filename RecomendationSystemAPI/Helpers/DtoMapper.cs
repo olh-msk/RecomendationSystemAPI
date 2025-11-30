@@ -13,7 +13,8 @@ namespace RecomendationSystemAPI.Helpers
             Id = stud.Id,
             FullName = stud.FullName,
             GPA = stud.GPA,
-            InterestNames = stud.Interests?.Select(i => i.InterestTag.Name).ToList() ?? new()
+            InterestNames = stud.Interests?.Select(i => i.InterestTag.Name).ToList() ?? new(),
+            Role = stud.Role.ToString()
         };
 
         public static CourseDto ToDto(Course course) => new()
@@ -22,7 +23,8 @@ namespace RecomendationSystemAPI.Helpers
             Title = course.Title,
             Description = course.Description,
             CreditHours = course.CreditHours,
-            Tags = course.Tags?.Select(t => t.InterestTag.Name).ToList() ?? new()
+            Tags = course.Tags?.Select(t => t.InterestTag.Name).ToList() ?? new(),
+            CreatedByName = course.CreatedBy?.FullName
         };
 
         public static InterestTagDto ToDto(InterestTag tag) => new()

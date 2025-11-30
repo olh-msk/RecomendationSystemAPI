@@ -1,11 +1,12 @@
-namespace RecomendationSystemAPI.DTOs.Auth;
-
-
-public class RegisterDto
+namespace RecomendationSystemAPI.DTOs.Auth
 {
-    public string FullName { get; set; }
-    public string Email { get; set; }
-    public string Password { get; set; }
-    public float GPA { get; set; }
-    public List<int> InterestTagIds { get; set; } = new();
+    public class RegisterDto
+    {
+        public string FullName { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+        public float GPA { get; set; }
+        public List<int> InterestTagIds { get; set; } = new();
+        public string Role { get; set; } = "Student";
+    }
 }
